@@ -65,6 +65,7 @@ for (const [name, period] of Object.entries(hands)) {
   hand.addEventListener('pointerdown', event => {
     if (playing || drag || (event.pointerType==='mouse' && event.button!==0)) return;
     event.preventDefault();
+    $('time').blur();
     drag = { id:event.pointerId, angle:pointerAngle(event), value:seconds };
     hand.setPointerCapture(event.pointerId);
   });
