@@ -1,4 +1,4 @@
-import { wrap, angleDelta, parseTime, formatTime, localTime } from './time.js';
+import { wrap, angleDelta, parseTime, formatTime, localTime } from './time.js?v=2';
 
 const $ = id => document.getElementById(id);
 const svgNS = 'http://www.w3.org/2000/svg';
