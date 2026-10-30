@@ -24,7 +24,10 @@
     </div>
     <div class="controls">
       <label class="time-label"><span class="sr-only">시간 입력 (시:분:초)</span><input id="time" type="time" step="1" aria-label="시간 입력 (시:분:초)"></label>
-      <button id="toggle" class="toggle" aria-label="정지"><svg id="toggle-icon" width="17" height="17" viewBox="0 0 20 20" fill="currentColor"><path d="M5 3h3v14H5zm7 0h3v14h-3z"/></svg><span id="toggle-label">정지</span></button>
+      <div class="buttons">
+        <button id="toggle" class="toggle" aria-label="정지"><svg id="toggle-icon" width="17" height="17" viewBox="0 0 20 20" fill="currentColor"><path d="M5 3h3v14H5zm7 0h3v14h-3z"/></svg><span id="toggle-label">정지</span></button>
+        <button id="realtime" class="realtime">실제 시간으로 재생</button>
+      </div>
       <p id="hint">정지하면 바늘을 돌리거나 시간을 입력할 수 있어요.</p>
     </div>
   </main>

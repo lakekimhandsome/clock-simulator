@@ -1,4 +1,4 @@
-import { wrap, angleDelta, parseTime, formatTime } from './time.js';
+import { wrap, angleDelta, parseTime, formatTime, localTime } from './time.js';
 
 const $ = id => document.getElementById(id);
 const svgNS = 'http://www.w3.org/2000/svg';
@@ -15,14 +15,17 @@ for (let i = 1; i <= 12; i++) {
   text.textContent = i;
   $('numbers').append(text);
 }
-const now = new Date();
-let seconds = now.getHours()*3600 + now.getMinutes()*60 + now.getSeconds();
+let seconds = localTime();
 let playing = true;
+let realtime = false;
 let origin = performance.now();
 let base = seconds;
 let drag = null;
 const hands = { hour:43200, minute:3600, second:60 };
-function current() { return playing ? wrap(base + (performance.now()-origin)/1000) : seconds; }
+function current() {
+  if (!playing) return seconds;
+  return realtime ? localTime() : wrap(base + (performance.now()-origin)/1000);
+}
 function render() {
   seconds = current();
   for (const [name, period] of Object.entries(hands)) {
@@ -37,9 +40,10 @@ function render() {
   $('clock').setAttribute('aria-label', `아날로그 시계 ${formatTime(seconds)}`);
 }
 function setTime(value) { seconds = wrap(value); base = seconds; origin = performance.now(); render(); }
-$('toggle').addEventListener('click', () => {
+function setPlaying(value) {
   seconds = current();
-  playing = !playing;
+  playing = value;
+  if (!playing) realtime = false;
   base = seconds; origin = performance.now();
   document.body.classList.toggle('paused', !playing);
   $('time').disabled = playing;
@@ -48,6 +52,11 @@ $('toggle').addEventListener('click', () => {
   $('toggle-icon').innerHTML = playing ? '<path d="M5 3h3v14H5zm7 0h3v14h-3z"/>' : '<path d="m6 3 11 7-11 7z"/>';
   $('hint').textContent = playing ? '정지하면 바늘을 돌리거나 시간을 입력할 수 있어요.' : '바늘을 잡고 돌려 보세요. 시간도 직접 입력할 수 있어요.';
   render();
+}
+$('toggle').addEventListener('click', () => setPlaying(!playing));
+$('realtime').addEventListener('click', () => {
+  realtime = true;
+  setPlaying(true);
 });
 $('time').disabled = true;
 $('time').addEventListener('change', event => {

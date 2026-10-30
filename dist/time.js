@@ -1,5 +1,8 @@
 export const DAY = 86400;
 export const wrap = (seconds) => ((seconds % DAY) + DAY) % DAY;
+export function localTime(date = new Date()) {
+  return date.getHours()*3600 + date.getMinutes()*60 + date.getSeconds() + date.getMilliseconds()/1000;
+}
 export function angleDelta(previous, next) {
   return ((next - previous + 540) % 360) - 180;
 }

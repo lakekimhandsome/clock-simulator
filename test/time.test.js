@@ -1,6 +1,10 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { wrap, angleDelta, parseTime, formatTime } from '../dist/time.js';
+import { wrap, angleDelta, parseTime, formatTime, localTime } from '../dist/time.js';
+test('real time uses the device local time including fractional seconds', () => {
+  assert.equal(localTime(new Date(2026,9,31,23,59,59,750)),86399.75);
+  assert.equal(localTime(new Date(2026,10,1,0,0,0)),0);
+});
 test('time wraps in both directions at midnight', () => {
   assert.equal(wrap(86401), 1); assert.equal(wrap(-1), 86399);
   assert.equal(formatTime(-1), '23:59:59'); assert.equal(formatTime(86400), '00:00:00');
