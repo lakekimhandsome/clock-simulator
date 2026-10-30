@@ -1,4 +1,4 @@
-import { wrap, angleDelta, parseTime, formatTime, localTime } from './time.js?v=2';
+import { wrap, angleDelta, parseTime, formatTime, localTime, secondHandTime } from './time.js?v=3';
 
 const $ = id => document.getElementById(id);
 const svgNS = 'http://www.w3.org/2000/svg';
@@ -21,6 +21,7 @@ let realtime = false;
 let origin = performance.now();
 let base = seconds;
 let drag = null;
+let ticksPerSecond = 0;
 const hands = { hour:43200, minute:3600, second:60 };
 function current() {
   if (!playing) return seconds;
@@ -29,7 +30,8 @@ function current() {
 function render() {
   seconds = current();
   for (const [name, period] of Object.entries(hands)) {
-    $(name).setAttribute('transform', `rotate(${seconds / period * 360} 300 300)`);
+    const handTime = name === 'second' ? secondHandTime(seconds, ticksPerSecond) : seconds;
+    $(name).setAttribute('transform', `rotate(${handTime / period * 360} 300 300)`);
     const value = name === 'hour' ? Math.floor(seconds/3600) : name === 'minute' ? Math.floor(seconds/60)%60 : Math.floor(seconds)%60;
     $(name).setAttribute('aria-valuenow', value);
     $(name).setAttribute('aria-valuetext', `${value}${name==='hour'?'시':name==='minute'?'분':'초'}`);
@@ -55,6 +57,10 @@ function setPlaying(value) {
   render();
 }
 $('toggle').addEventListener('click', () => setPlaying(!playing));
+$('second-mode').addEventListener('change', event => {
+  ticksPerSecond = Number(event.target.value);
+  render();
+});
 $('realtime').addEventListener('click', () => {
   realtime = true;
   setPlaying(true);

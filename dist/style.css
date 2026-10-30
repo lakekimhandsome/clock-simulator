@@ -2,3 +2,4 @@
 body:fullscreen .brand,body:fullscreen .face-brand,body:fullscreen footer,body:fullscreen .controls{display:none}
 body:fullscreen header{position:absolute;top:0;right:0;z-index:1}
 body:fullscreen main{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr);padding:20px}
+.second-mode{display:flex;align-items:center;gap:8px;font-size:12px;color:#53584e}.second-mode select{font:inherit;color:#36442f;background:#fafaf7;border:1px solid #cdd3c6;border-radius:8px;padding:8px;cursor:pointer}.second-mode select:focus-visible{outline:2px solid #b95839;outline-offset:3px}

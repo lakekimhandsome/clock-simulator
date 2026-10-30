@@ -1,5 +1,8 @@
 export const DAY = 86400;
 export const wrap = (seconds) => ((seconds % DAY) + DAY) % DAY;
+export function secondHandTime(seconds, ticksPerSecond = 0) {
+  return ticksPerSecond ? Math.floor(seconds * ticksPerSecond) / ticksPerSecond : seconds;
+}
 export function localTime(date = new Date()) {
   return date.getHours()*3600 + date.getMinutes()*60 + date.getSeconds() + date.getMilliseconds()/1000;
 }
