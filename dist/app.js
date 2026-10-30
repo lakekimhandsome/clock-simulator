@@ -48,6 +48,7 @@ function setPlaying(value) {
   document.body.classList.toggle('paused', !playing);
   $('time').disabled = playing;
   $('toggle-label').textContent = playing ? '정지' : '재생';
+  $('realtime').textContent = playing ? '실제 시간으로 이동' : '실제 시간으로 재생';
   $('toggle').setAttribute('aria-label', playing ? '정지' : '재생');
   $('toggle-icon').innerHTML = playing ? '<path d="M5 3h3v14H5zm7 0h3v14h-3z"/>' : '<path d="m6 3 11 7-11 7z"/>';
   $('hint').textContent = playing ? '정지하면 바늘을 돌리거나 시간을 입력할 수 있어요.' : '바늘을 잡고 돌려 보세요. 시간도 직접 입력할 수 있어요.';
