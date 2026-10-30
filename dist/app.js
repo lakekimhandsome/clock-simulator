@@ -1,4 +1,4 @@
-import { wrap, angleDelta, parseTime, formatTime, localTime, secondHandTime } from './time.js?v=3';
+import { wrap, angleDelta, parseTime, formatTime, localTime, movementTime } from './time.js?v=4';
 
 const $ = id => document.getElementById(id);
 const svgNS = 'http://www.w3.org/2000/svg';
@@ -29,8 +29,8 @@ function current() {
 }
 function render() {
   seconds = current();
+  const handTime = movementTime(seconds, ticksPerSecond);
   for (const [name, period] of Object.entries(hands)) {
-    const handTime = name === 'second' ? secondHandTime(seconds, ticksPerSecond) : seconds;
     $(name).setAttribute('transform', `rotate(${handTime / period * 360} 300 300)`);
     const value = name === 'hour' ? Math.floor(seconds/3600) : name === 'minute' ? Math.floor(seconds/60)%60 : Math.floor(seconds)%60;
     $(name).setAttribute('aria-valuenow', value);

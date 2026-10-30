@@ -2,7 +2,7 @@
 
 A large analog clock with play/pause, draggable hands, editable time, and fullscreen. No runtime dependencies or backend.
 
-Second-hand modes: deadbeat (1 step/second), 3Hz (6 steps/second), 4Hz (8 steps/second), and continuous (default). The mode selector is hidden with the other controls in fullscreen. Hour and minute hands remain continuous.
+Movement modes: deadbeat (1 step/second), 3Hz (6 steps/second), 4Hz (8 steps/second), and continuous (default). The mode selector is hidden with the other controls in fullscreen. The selected beat rate applies to all three hands.
 
 ## Local
 

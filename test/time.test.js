@@ -1,15 +1,15 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { wrap, angleDelta, parseTime, formatTime, localTime, secondHandTime } from '../dist/time.js';
-test('second hand defaults to continuous and steps at the selected beat rate', () => {
-  assert.equal(secondHandTime(12.789), 12.789);
-  assert.equal(secondHandTime(12.789, 0), 12.789);
+import { wrap, angleDelta, parseTime, formatTime, localTime, movementTime } from '../dist/time.js';
+test('movement defaults to continuous and steps at the selected beat rate', () => {
+  assert.equal(movementTime(12.789), 12.789);
+  assert.equal(movementTime(12.789, 0), 12.789);
   for (const ticks of [1, 6, 8]) {
-    assert.equal(secondHandTime(12, ticks), 12);
-    assert.equal(secondHandTime(12 + 0.99/ticks, ticks), 12);
-    assert.equal(secondHandTime(12 + 1.01/ticks, ticks), 12 + 1/ticks);
-    assert.equal(secondHandTime(86399.999, ticks), 86400 - 1/ticks);
-    assert.equal(secondHandTime(0, ticks), 0);
+    assert.equal(movementTime(12, ticks), 12);
+    assert.equal(movementTime(12 + 0.99/ticks, ticks), 12);
+    assert.equal(movementTime(12 + 1.01/ticks, ticks), 12 + 1/ticks);
+    assert.equal(movementTime(86399.999, ticks), 86400 - 1/ticks);
+    assert.equal(movementTime(0, ticks), 0);
   }
 });
 test('real time uses the device local time including fractional seconds', () => {
