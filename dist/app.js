@@ -58,10 +58,12 @@ function setPlaying(value) {
 }
 $('toggle').addEventListener('click', () => setPlaying(!playing));
 document.addEventListener('keydown', event => {
-  if (event.code !== 'Space' || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || event.isComposing || event.defaultPrevented) return;
+  if (!['Space', 'KeyF'].includes(event.code) || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || event.isComposing || event.defaultPrevented) return;
   if (event.target.isContentEditable || event.target.closest('input, textarea, select')) return;
   event.preventDefault();
-  if (!event.repeat && !drag) setPlaying(!playing);
+  if (event.repeat || drag) return;
+  if (event.code === 'KeyF') toggleFullscreen();
+  else setPlaying(!playing);
 });
 $('second-mode').addEventListener('change', event => {
   ticksPerSecond = Number(event.target.value);
@@ -108,16 +110,17 @@ for (const [name, period] of Object.entries(hands)) {
     setTime(seconds + (event.key==='ArrowUp'||event.key==='ArrowRight'?1:-1)*increment);
   });
 }
-$('fullscreen').addEventListener('click', async () => {
+async function toggleFullscreen() {
   try {
     if (document.fullscreenElement) await document.exitFullscreen();
     else if (document.body.requestFullscreen) await document.body.requestFullscreen();
     else $('message').textContent = '이 브라우저는 전체화면을 지원하지 않습니다.';
   } catch { $('message').textContent = '전체화면으로 전환하지 못했습니다.'; }
-});
+}
+$('fullscreen').addEventListener('click', toggleFullscreen);
 document.addEventListener('fullscreenchange', () => {
   $('fullscreen').setAttribute('aria-label', document.fullscreenElement ? '전체화면 종료' : '전체화면');
-  $('fullscreen').title = document.fullscreenElement ? '전체화면 종료' : '전체화면';
+  $('fullscreen').title = document.fullscreenElement ? '전체화면 종료 (F)' : '전체화면 (F)';
 });
 function frame() { if (playing) render(); requestAnimationFrame(frame); }
 render(); requestAnimationFrame(frame);

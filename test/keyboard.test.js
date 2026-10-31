@@ -4,9 +4,11 @@ import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
 import * as time from '../dist/time.js';
 
-test('Space toggles playback without repeats or interfering with editing', () => {
+test('Space toggles playback and F toggles fullscreen without repeats or interfering with editing', async () => {
   const elements = new Map();
   const listeners = {};
+  let fullscreenRequests = 0;
+  let fullscreenExits = 0;
   const element = () => ({
     setAttribute() {}, append() {}, addEventListener() {},
     closest() { return false; },
@@ -17,7 +19,11 @@ test('Space toggles playback without repeats or interfering with editing', () =>
       return elements.get(id);
     },
     createElementNS: element,
-    body: { classList: { toggle() {} } },
+    body: {
+      classList: { toggle() {} },
+      async requestFullscreen() { fullscreenRequests++; document.fullscreenElement = this; },
+    },
+    async exitFullscreen() { fullscreenExits++; document.fullscreenElement = null; },
     addEventListener(type, handler) { listeners[type] = handler; },
   };
   const source = readFileSync(new URL('../dist/app.js', import.meta.url), 'utf8');
@@ -44,6 +50,28 @@ test('Space toggles playback without repeats or interfering with editing', () =>
     assert.equal(press(overrides).prevented, undefined);
     assert.equal(input.disabled, false);
   }
+  press({ code: 'KeyF' });
+  assert.equal(fullscreenRequests, 1);
+  assert.equal(document.fullscreenElement, document.body);
+  assert.equal(input.disabled, false);
+  press({ code: 'KeyF', repeat: true });
+  for (const overrides of [
+    { altKey: true }, { ctrlKey: true }, { metaKey: true }, { shiftKey: true },
+    { isComposing: true }, { defaultPrevented: true },
+    { target: { isContentEditable: true } },
+    { target: { closest: () => true } },
+  ]) assert.equal(press({ code: 'KeyF', ...overrides }).prevented, undefined);
+  assert.equal(fullscreenExits, 0);
+  press({ code: 'KeyF' });
+  assert.equal(fullscreenExits, 1);
+  assert.equal(document.fullscreenElement, null);
+  document.body.requestFullscreen = undefined;
+  press({ code: 'KeyF' });
+  assert.equal(elements.get('message').textContent, '이 브라우저는 전체화면을 지원하지 않습니다.');
+  document.body.requestFullscreen = async () => { throw new Error('Denied'); };
+  press({ code: 'KeyF' });
+  await new Promise(setImmediate);
+  assert.equal(elements.get('message').textContent, '전체화면으로 전환하지 못했습니다.');
   document.fullscreenElement = document.body;
   press({ target: elements.get('fullscreen') });
   assert.equal(input.disabled, true);
