@@ -57,6 +57,12 @@ function setPlaying(value) {
   render();
 }
 $('toggle').addEventListener('click', () => setPlaying(!playing));
+document.addEventListener('keydown', event => {
+  if (event.code !== 'Space' || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || event.isComposing || event.defaultPrevented) return;
+  if (event.target.isContentEditable || event.target.closest('input, textarea, select')) return;
+  event.preventDefault();
+  if (!event.repeat && !drag) setPlaying(!playing);
+});
 $('second-mode').addEventListener('change', event => {
   ticksPerSecond = Number(event.target.value);
   render();

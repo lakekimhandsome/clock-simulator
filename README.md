@@ -12,4 +12,6 @@ Movement modes: deadbeat (1 step/second), 3Hz (6 steps/second), 4Hz (8 steps/sec
 
 Pause to drag any hand or enter a time. Focus a hand and use arrow keys for accessible adjustment. Time advances from the selected time at normal speed. Fullscreen requires browser support.
 
+Press Space to play/pause, including in fullscreen. The shortcut is inactive while editing a time or selecting a movement mode.
+
 Static files live in `dist/`. GitHub Pages deploys them automatically on every push to `main`, after tests pass. The custom domain is `clock-simulator.lakekim.com`.
