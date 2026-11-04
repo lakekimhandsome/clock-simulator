@@ -8,13 +8,17 @@ for (let i = 0; i < 60; i++) {
   for (const [name, value] of Object.entries({x1:300,y1:major?35:26,x2:300,y2:major?54:34,transform:`rotate(${i*6} 300 300)`,class:`tick${major?' major':''}`})) tick.setAttribute(name, value);
   $('marks').append(tick);
 }
-for (let i = 1; i <= 12; i++) {
-  const text = document.createElementNS(svgNS, 'text');
-  const angle = i * Math.PI / 6;
-  for (const [name, value] of Object.entries({x:300+Math.sin(angle)*219,y:300-Math.cos(angle)*219,'text-anchor':'middle','dominant-baseline':'central',class:'number'})) text.setAttribute(name, value);
-  text.textContent = i;
-  $('numbers').append(text);
+function renderNumbers(hours) {
+  $('numbers').replaceChildren();
+  for (let i = 1; i <= hours; i++) {
+    const text = document.createElementNS(svgNS, 'text');
+    const angle = i * Math.PI * 2 / hours;
+    for (const [name, value] of Object.entries({x:300+Math.sin(angle)*219,y:300-Math.cos(angle)*219,'text-anchor':'middle','dominant-baseline':'central',class:'number'})) text.setAttribute(name, value);
+    text.textContent = i;
+    $('numbers').append(text);
+  }
 }
+renderNumbers(12);
 let seconds = localTime();
 let playing = true;
 let realtime = false;
@@ -65,9 +69,17 @@ document.addEventListener('keydown', event => {
   if (event.code === 'KeyF') toggleFullscreen();
   else setPlaying(!playing);
 });
-$('second-mode').addEventListener('pointerdown', event => event.currentTarget.classList.add('pointer-focus'));
-$('second-mode').addEventListener('keydown', event => event.currentTarget.classList.remove('pointer-focus'));
-$('second-mode').addEventListener('blur', event => event.currentTarget.classList.remove('pointer-focus'));
+for (const id of ['second-mode', 'hour-cycle']) {
+  $(id).addEventListener('pointerdown', event => event.currentTarget.classList.add('pointer-focus'));
+  $(id).addEventListener('keydown', event => event.currentTarget.classList.remove('pointer-focus'));
+  $(id).addEventListener('blur', event => event.currentTarget.classList.remove('pointer-focus'));
+}
+$('hour-cycle').addEventListener('change', event => {
+  const hours = Number(event.target.value);
+  hands.hour = hours * 3600;
+  renderNumbers(hours);
+  render();
+});
 $('second-mode').addEventListener('change', event => {
   ticksPerSecond = Number(event.target.value);
   render();
@@ -87,7 +99,7 @@ function pointerAngle(event) {
   const rect = $('clock').getBoundingClientRect();
   return (Math.atan2(event.clientX-rect.left-rect.width/2, -(event.clientY-rect.top-rect.height/2))*180/Math.PI + 360)%360;
 }
-for (const [name, period] of Object.entries(hands)) {
+for (const name of Object.keys(hands)) {
   const hand = $(name);
   hand.addEventListener('pointerdown', event => {
     if (playing || drag || (event.pointerType==='mouse' && event.button!==0)) return;
@@ -99,7 +111,7 @@ for (const [name, period] of Object.entries(hands)) {
   hand.addEventListener('pointermove', event => {
     if (!drag || drag.id!==event.pointerId) return;
     const angle = pointerAngle(event);
-    drag.value += angleDelta(drag.angle, angle) / 360 * period;
+    drag.value += angleDelta(drag.angle, angle) / 360 * hands[name];
     drag.angle = angle;
     setTime(Math.round(drag.value));
   });

@@ -24,6 +24,12 @@
       </svg>
     </div>
     <div class="controls">
+      <label class="second-mode">시간제
+        <select id="hour-cycle">
+          <option value="12" selected>12시간제</option>
+          <option value="24">24시간제</option>
+        </select>
+      </label>
       <label class="second-mode">무브먼트
         <select id="second-mode">
           <option value="1">데드비트 (초당 1회)</option>
@@ -42,6 +48,6 @@
   </main>
   <footer><span>시간을, 내 마음대로.</span><a href="https://github.com/lakekimhandsome/clock-simulator" target="_blank" rel="noopener noreferrer">GitHub <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="icons.svg#external-link"/></svg></a></footer>
   <p id="message" class="sr-only" role="status"></p>
-  <script type="module" src="app.js?v=9"></script>
+  <script type="module" src="app.js?v=10"></script>
 </body>
 </html>
