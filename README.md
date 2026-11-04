@@ -17,3 +17,5 @@ Pause to drag any hand or enter a time. Focus a hand and use arrow keys for acce
 Press F to toggle fullscreen and Space to play/pause, including in fullscreen. These shortcuts are inactive while editing a time or selecting a movement mode.
 
 Static files live in `dist/`. GitHub Pages deploys them automatically on every push to `main`, after tests pass. The custom domain is `clock-simulator.lakekim.com`.
+
+Icons use the bundled [Lucide](https://lucide.dev/) SVGs; license notices are in `dist/lucide-LICENSE.txt`.

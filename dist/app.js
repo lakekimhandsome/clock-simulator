@@ -52,7 +52,7 @@ function setPlaying(value) {
   $('toggle-label').textContent = playing ? '정지' : '재생';
   $('realtime').textContent = playing ? '실제 시간으로 이동' : '실제 시간으로 재생';
   $('toggle').setAttribute('aria-label', playing ? '정지' : '재생');
-  $('toggle-icon').innerHTML = playing ? '<path d="M5 3h3v14H5zm7 0h3v14h-3z"/>' : '<path d="m6 3 11 7-11 7z"/>';
+  $('toggle-icon').setAttribute('href', `icons.svg#${playing ? 'pause' : 'play'}`);
   $('hint').textContent = playing ? '정지하면 바늘을 돌리거나 시간을 입력할 수 있어요.' : '바늘을 잡고 돌려 보세요. 시간도 직접 입력할 수 있어요.';
   render();
 }
@@ -120,6 +120,7 @@ async function toggleFullscreen() {
 $('fullscreen').addEventListener('click', toggleFullscreen);
 document.addEventListener('fullscreenchange', () => {
   $('fullscreen').setAttribute('aria-label', document.fullscreenElement ? '전체화면 종료' : '전체화면');
+  $('fullscreen-icon').setAttribute('href', `icons.svg#${document.fullscreenElement ? 'minimize' : 'maximize'}`);
   $('fullscreen').title = document.fullscreenElement ? '전체화면 종료 (F)' : '전체화면 (F)';
 });
 function frame() { if (playing) render(); requestAnimationFrame(frame); }

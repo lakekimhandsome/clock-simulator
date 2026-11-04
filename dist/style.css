@@ -7,3 +7,7 @@ body:fullscreen main{grid-template-columns:minmax(0,1fr);grid-template-rows:minm
 .second-mode{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}.second-mode select{font:inherit;color:var(--button);background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;cursor:pointer}.second-mode select:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
 
 .header-actions{display:flex;gap:10px}.pin-center{fill:var(--background)}
+
+footer a{display:inline-flex;align-items:center;gap:4px}
+
+.second-mode{position:relative}.second-mode select{appearance:none;padding-right:28px}.second-mode::after{content:"";position:absolute;right:10px;width:12px;height:12px;pointer-events:none;background:currentColor;mask:url("chevron-down.svg") center/contain no-repeat;-webkit-mask:url("chevron-down.svg") center/contain no-repeat}

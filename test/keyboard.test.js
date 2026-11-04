@@ -10,7 +10,7 @@ test('Space toggles playback and F toggles fullscreen without repeats or interfe
   let fullscreenRequests = 0;
   let fullscreenExits = 0;
   const element = () => ({
-    setAttribute() {}, append() {}, addEventListener() {},
+    attributes: {}, setAttribute(name, value) { this.attributes[name] = value; }, append() {}, addEventListener() {},
     closest() { return false; },
   });
   const document = {
@@ -39,6 +39,7 @@ test('Space toggles playback and F toggles fullscreen without repeats or interfe
   assert.equal(input.disabled, true);
   assert.equal(press().prevented, true);
   assert.equal(input.disabled, false);
+  assert.equal(elements.get('toggle-icon').attributes.href, 'icons.svg#play');
   assert.equal(press({ repeat: true }).prevented, true);
   assert.equal(input.disabled, false);
   for (const overrides of [
@@ -53,6 +54,8 @@ test('Space toggles playback and F toggles fullscreen without repeats or interfe
   press({ code: 'KeyF' });
   assert.equal(fullscreenRequests, 1);
   assert.equal(document.fullscreenElement, document.body);
+  listeners.fullscreenchange();
+  assert.equal(elements.get('fullscreen-icon').attributes.href, 'icons.svg#minimize');
   assert.equal(input.disabled, false);
   press({ code: 'KeyF', repeat: true });
   for (const overrides of [
@@ -65,6 +68,8 @@ test('Space toggles playback and F toggles fullscreen without repeats or interfe
   press({ code: 'KeyF' });
   assert.equal(fullscreenExits, 1);
   assert.equal(document.fullscreenElement, null);
+  listeners.fullscreenchange();
+  assert.equal(elements.get('fullscreen-icon').attributes.href, 'icons.svg#maximize');
   document.body.requestFullscreen = undefined;
   press({ code: 'KeyF' });
   assert.equal(elements.get('message').textContent, '이 브라우저는 전체화면을 지원하지 않습니다.');
@@ -75,6 +80,7 @@ test('Space toggles playback and F toggles fullscreen without repeats or interfe
   document.fullscreenElement = document.body;
   press({ target: elements.get('fullscreen') });
   assert.equal(input.disabled, true);
+  assert.equal(elements.get('toggle-icon').attributes.href, 'icons.svg#pause');
   press({ target: elements.get('toggle') });
   assert.equal(input.disabled, false);
 });

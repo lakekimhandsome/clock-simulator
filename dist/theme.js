@@ -9,6 +9,7 @@ function applyTheme(theme) {
   if (button) {
     button.setAttribute('aria-pressed', String(theme === 'dark'));
     button.setAttribute('aria-label', theme === 'dark' ? '라이트 모드' : '다크 모드');
+    document.getElementById('theme-icon').setAttribute('href', `icons.svg#${theme === 'dark' ? 'sun' : 'moon'}`);
     button.title = theme === 'dark' ? '라이트 모드' : '다크 모드';
   }
 }
