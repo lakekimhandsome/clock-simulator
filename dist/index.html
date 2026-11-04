@@ -4,12 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5f4f0">
+  <script src="theme.js?v=1"></script>
   <meta name="description" content="시간을 잠시 멈추고, 바늘을 돌려 보세요. 간단한 아날로그 시계 시뮬레이터.">
   <title>Clock Simulator</title>
-  <link rel="stylesheet" href="style.css?v=6">
+  <link rel="stylesheet" href="style.css?v=7">
 </head>
 <body>
-  <header><span class="brand">CLOCK SIMULATOR<span class="brand-dot">.</span></span><button id="fullscreen" class="fullscreen" aria-keyshortcuts="f" aria-label="전체화면" title="전체화면 (F)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></svg></button></header>
+  <header><span class="brand">CLOCK SIMULATOR<span class="brand-dot">.</span></span><div class="header-actions"><button id="theme" class="theme" aria-label="다크 모드" aria-pressed="false" title="다크 모드"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"/></svg></button><button id="fullscreen" class="fullscreen" aria-keyshortcuts="f" aria-label="전체화면" title="전체화면 (F)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></svg></button></div></header>
   <main>
     <div class="clock-wrap">
       <svg id="clock" viewBox="0 0 600 600" role="group" aria-label="아날로그 시계">
@@ -19,7 +20,7 @@
         <g class="hand" id="hour" role="slider" tabindex="0" aria-label="시침" aria-valuemin="0" aria-valuemax="23"><line class="hit" x1="300" y1="315" x2="300" y2="155"/><line class="hour-line" x1="300" y1="310" x2="300" y2="155"/></g>
         <g class="hand" id="minute" role="slider" tabindex="0" aria-label="분침" aria-valuemin="0" aria-valuemax="59"><line class="hit" x1="300" y1="320" x2="300" y2="89"/><line class="minute-line" x1="300" y1="315" x2="300" y2="89"/></g>
         <g class="hand" id="second" role="slider" tabindex="0" aria-label="초침" aria-valuemin="0" aria-valuemax="59"><line class="hit" x1="300" y1="343" x2="300" y2="66"/><line class="second-line" x1="300" y1="343" x2="300" y2="66"/></g>
-        <circle class="pin" cx="300" cy="300" r="9"/><circle fill="#f5f4f0" cx="300" cy="300" r="3"/>
+        <circle class="pin" cx="300" cy="300" r="9"/><circle class="pin-center" cx="300" cy="300" r="3"/>
       </svg>
     </div>
     <div class="controls">

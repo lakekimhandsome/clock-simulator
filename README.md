@@ -4,6 +4,8 @@ A large analog clock with play/pause, draggable hands, editable time, and fullsc
 
 Movement modes: deadbeat (1 step/second), 3Hz (6 steps/second), 4Hz (8 steps/second), and continuous (default). The mode selector is hidden with the other controls in fullscreen. The selected beat rate applies to all three hands.
 
+The theme follows your system appearance until you choose light or dark with the header button. Your choice is saved in this browser and also applies in fullscreen.
+
 ## Local
 
 `npm run dev` → http://localhost:4173
