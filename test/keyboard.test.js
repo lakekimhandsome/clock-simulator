@@ -10,12 +10,10 @@ test('Space toggles playback and F toggles fullscreen without repeats or interfe
   let fullscreenRequests = 0;
   let fullscreenExits = 0;
   const element = () => ({
-    children: [], replaceChildren() { this.children = []; },
-    attributes: {}, setAttribute(name, value) { this.attributes[name] = value; }, append(child) { this.children.push(child); },
+    attributes: {}, setAttribute(name, value) { this.attributes[name] = value; }, append() {},
     listeners: {}, addEventListener(type, handler) { this.listeners[type] = handler; },
     classList: { values: new Set(), add(value) { this.values.add(value); }, remove(value) { this.values.delete(value); } },
-    closest() { return false; }, blur() {}, setPointerCapture() {},
-    getBoundingClientRect() { return { left: 0, top: 0, width: 600, height: 600 }; },
+    closest() { return false; },
   });
   const document = {
     getElementById(id) {
@@ -39,18 +37,6 @@ test('Space toggles playback and F toggles fullscreen without repeats or interfe
     listeners.keydown(event);
     return event;
   };
-  const cycle = elements.get('hour-cycle');
-  const numbers = elements.get('numbers');
-  const hour = elements.get('hour');
-  assert.equal(numbers.children.length, 12);
-  const originalAngle = Number(hour.attributes.transform.match(/rotate\(([^ ]+)/)[1]);
-  cycle.listeners.change({ target: { value: '24' } });
-  assert.equal(numbers.children.length, 24);
-  assert.equal(numbers.children.at(-1).textContent, 24);
-  assert.equal(Number(hour.attributes.transform.match(/rotate\(([^ ]+)/)[1]), originalAngle / 2);
-  cycle.listeners.change({ target: { value: '12' } });
-  assert.equal(numbers.children.length, 12);
-  assert.equal(Number(hour.attributes.transform.match(/rotate\(([^ ]+)/)[1]), originalAngle);
   const mode = elements.get('second-mode');
   mode.listeners.pointerdown({ currentTarget: mode });
   assert.equal(mode.classList.values.has('pointer-focus'), true);
@@ -107,14 +93,31 @@ test('Space toggles playback and F toggles fullscreen without repeats or interfe
   assert.equal(elements.get('toggle-icon').attributes.href, 'icons.svg#pause');
   press({ target: elements.get('toggle') });
   assert.equal(input.disabled, false);
-  for (const [hours, expected] of [['24', '06:00:00'], ['12', '03:00:00']]) {
-    cycle.listeners.change({ target: { value: hours } });
-    input.listeners.change({ target: { value: '00:00:00' } });
-    hour.listeners.pointerdown({ pointerId: 1, clientX: 300, clientY: 0, preventDefault() {} });
-    hour.listeners.pointermove({ pointerId: 1, clientX: 600, clientY: 300 });
-    hour.listeners.pointerup({ pointerId: 1 });
-    assert.equal(input.value, expected);
-    hour.listeners.keydown({ key: 'ArrowUp', preventDefault() {} });
-    assert.equal(input.value, hours === '24' ? '07:00:00' : '04:00:00');
-  }
+  const cycle = elements.get('hour-cycle');
+  const period = elements.get('period');
+  input.value = '13:02:03';
+  input.listeners.change();
+  const angle = elements.get('hour').attributes.transform;
+  cycle.listeners.change({ target: { value: '12' } });
+  assert.equal(input.value, '01:02:03');
+  assert.equal(period.value, 'pm');
+  assert.equal(period.disabled, false);
+  assert.equal(elements.get('period-label').hidden, false);
+  assert.equal(elements.get('hour').attributes.transform, angle);
+  period.value = 'am';
+  period.listeners.change();
+  cycle.listeners.change({ target: { value: '24' } });
+  assert.equal(input.value, '01:02:03');
+  assert.equal(elements.get('period-label').hidden, true);
+  cycle.listeners.change({ target: { value: '12' } });
+  input.value = '00:00:00';
+  input.listeners.change();
+  assert.equal(input.value, '01:02:03');
+  input.value = '12:00:00';
+  period.value = 'pm';
+  input.listeners.change();
+  cycle.listeners.change({ target: { value: '24' } });
+  assert.equal(input.value, '12:00:00');
+  press();
+  assert.equal(period.disabled, true);
 });

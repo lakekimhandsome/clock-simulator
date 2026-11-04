@@ -28,3 +28,13 @@ test('time input accepts valid times and rejects invalid input', () => {
   assert.equal(parseTime('23:59:59'),86399); assert.equal(parseTime('00:00'),0);
   for (const value of ['24:00:00','12:60:00','12:00:60','','abc','1:02:03']) assert.equal(parseTime(value),null);
 });
+
+test('12-hour digital time handles midnight, noon, and invalid hours', () => {
+  assert.equal(formatTime(0, 12), '12:00:00');
+  assert.equal(formatTime(43200, 12), '12:00:00');
+  assert.equal(formatTime(86399, 12), '11:59:59');
+  assert.equal(parseTime('12:00:00', 12, 'am'), 0);
+  assert.equal(parseTime('12:00:00', 12, 'pm'), 43200);
+  assert.equal(parseTime('01:02:03', 12, 'pm'), 46923);
+  for (const value of ['00:00:00', '13:00:00', '12:60:00']) assert.equal(parseTime(value, 12, 'am'), null);
+});

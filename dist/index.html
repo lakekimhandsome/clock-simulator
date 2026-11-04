@@ -7,7 +7,7 @@
   <script src="theme.js?v=3"></script>
   <meta name="description" content="시간을 잠시 멈추고, 바늘을 돌려 보세요. 간단한 아날로그 시계 시뮬레이터.">
   <title>Clock Simulator</title>
-  <link rel="stylesheet" href="style.css?v=10">
+  <link rel="stylesheet" href="style.css?v=11">
 </head>
 <body>
   <header><span class="brand">CLOCK SIMULATOR<span class="brand-dot">.</span></span><div class="header-actions"><button id="theme" class="theme" aria-label="다크 모드" aria-pressed="false" title="다크 모드"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use id="theme-icon" href="icons.svg#moon"/></svg></button><button id="fullscreen" class="fullscreen" aria-keyshortcuts="f" aria-label="전체화면" title="전체화면 (F)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use id="fullscreen-icon" href="icons.svg#maximize"/></svg></button></div></header>
@@ -26,8 +26,8 @@
     <div class="controls">
       <label class="second-mode">시간제
         <select id="hour-cycle">
-          <option value="12" selected>12시간제</option>
-          <option value="24">24시간제</option>
+          <option value="12">12시간제</option>
+          <option value="24" selected>24시간제</option>
         </select>
       </label>
       <label class="second-mode">무브먼트
@@ -38,7 +38,7 @@
           <option value="0" selected>연속</option>
         </select>
       </label>
-      <label class="time-label"><span class="sr-only">시간 입력 (시:분:초)</span><input id="time" type="time" step="1" aria-label="시간 입력 (시:분:초)"></label>
+      <div class="time-label"><label class="second-mode" id="period-label" hidden><span class="sr-only">오전/오후</span><select id="period"><option value="am">오전</option><option value="pm">오후</option></select></label><label><span class="sr-only">시간 입력 (시:분:초)</span><input id="time" type="text" inputmode="numeric" maxlength="8" placeholder="HH:MM:SS" aria-label="시간 입력 (시:분:초)"></label></div>
       <div class="buttons">
         <button id="toggle" class="toggle" aria-keyshortcuts="Space" title="재생 / 정지 (Space)" aria-label="정지"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use id="toggle-icon" href="icons.svg#pause"/></svg><span id="toggle-label">정지</span></button>
         <button id="realtime" class="realtime">실제 시간으로 이동</button>
@@ -48,6 +48,6 @@
   </main>
   <footer><span>시간을, 내 마음대로.</span><a href="https://github.com/lakekimhandsome/clock-simulator" target="_blank" rel="noopener noreferrer">GitHub <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="icons.svg#external-link"/></svg></a></footer>
   <p id="message" class="sr-only" role="status"></p>
-  <script type="module" src="app.js?v=10"></script>
+  <script type="module" src="app.js?v=11"></script>
 </body>
 </html>

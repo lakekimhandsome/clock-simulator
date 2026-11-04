@@ -9,13 +9,18 @@ export function localTime(date = new Date()) {
 export function angleDelta(previous, next) {
   return ((next - previous + 540) % 360) - 180;
 }
-export function parseTime(value) {
+export function parseTime(value, hourCycle = 24, period = 'am') {
   if (!/^\d{2}:\d{2}(:\d{2})?$/.test(value)) return null;
-  const [h, m, s = 0] = value.split(':').map(Number);
+  let [h, m, s = 0] = value.split(':').map(Number);
+  if (hourCycle === 12) {
+    if (h < 1 || h > 12 || !['am', 'pm'].includes(period)) return null;
+    h = h % 12 + (period === 'pm' ? 12 : 0);
+  }
   return h < 24 && m < 60 && s < 60 ? h * 3600 + m * 60 + s : null;
 }
-export function formatTime(seconds) {
+export function formatTime(seconds, hourCycle = 24) {
   const n = Math.floor(wrap(seconds));
-  return [Math.floor(n / 3600), Math.floor(n / 60) % 60, n % 60]
+  const hour = Math.floor(n / 3600);
+  return [hourCycle === 12 ? hour % 12 || 12 : hour, Math.floor(n / 60) % 60, n % 60]
     .map(value => String(value).padStart(2, '0')).join(':');
 }

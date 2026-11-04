@@ -11,3 +11,5 @@ body:fullscreen main{grid-template-columns:minmax(0,1fr);grid-template-rows:minm
 footer a{display:inline-flex;align-items:center;gap:4px}
 
 .second-mode{position:relative}.second-mode select{appearance:none;padding-right:28px}.second-mode::after{content:"";position:absolute;right:10px;width:12px;height:12px;pointer-events:none;background:currentColor;mask:url("chevron-down.svg") center/contain no-repeat;-webkit-mask:url("chevron-down.svg") center/contain no-repeat}
+
+.time-label{display:flex;align-items:center;gap:8px}.time-label [hidden]{display:none}

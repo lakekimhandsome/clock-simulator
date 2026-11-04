@@ -1,4 +1,4 @@
-import { wrap, angleDelta, parseTime, formatTime, localTime, movementTime } from './time.js?v=4';
+import { wrap, angleDelta, parseTime, formatTime, localTime, movementTime } from './time.js?v=5';
 
 const $ = id => document.getElementById(id);
 const svgNS = 'http://www.w3.org/2000/svg';
@@ -8,17 +8,13 @@ for (let i = 0; i < 60; i++) {
   for (const [name, value] of Object.entries({x1:300,y1:major?35:26,x2:300,y2:major?54:34,transform:`rotate(${i*6} 300 300)`,class:`tick${major?' major':''}`})) tick.setAttribute(name, value);
   $('marks').append(tick);
 }
-function renderNumbers(hours) {
-  $('numbers').replaceChildren();
-  for (let i = 1; i <= hours; i++) {
-    const text = document.createElementNS(svgNS, 'text');
-    const angle = i * Math.PI * 2 / hours;
-    for (const [name, value] of Object.entries({x:300+Math.sin(angle)*219,y:300-Math.cos(angle)*219,'text-anchor':'middle','dominant-baseline':'central',class:'number'})) text.setAttribute(name, value);
-    text.textContent = i;
-    $('numbers').append(text);
-  }
+for (let i = 1; i <= 12; i++) {
+  const text = document.createElementNS(svgNS, 'text');
+  const angle = i * Math.PI / 6;
+  for (const [name, value] of Object.entries({x:300+Math.sin(angle)*219,y:300-Math.cos(angle)*219,'text-anchor':'middle','dominant-baseline':'central',class:'number'})) text.setAttribute(name, value);
+  text.textContent = i;
+  $('numbers').append(text);
 }
-renderNumbers(12);
 let seconds = localTime();
 let playing = true;
 let realtime = false;
@@ -26,6 +22,7 @@ let origin = performance.now();
 let base = seconds;
 let drag = null;
 let ticksPerSecond = 0;
+let hourCycle = 24;
 const hands = { hour:43200, minute:3600, second:60 };
 function current() {
   if (!playing) return seconds;
@@ -42,7 +39,10 @@ function render() {
     $(name).setAttribute('aria-disabled', String(playing));
     $(name).setAttribute('tabindex', playing ? '-1' : '0');
   }
-  if (document.activeElement !== $('time')) $('time').value = formatTime(seconds);
+  if (document.activeElement !== $('time')) {
+    $('time').value = formatTime(seconds, hourCycle);
+    $('period').value = seconds < 43200 ? 'am' : 'pm';
+  }
   $('clock').setAttribute('aria-label', `아날로그 시계 ${formatTime(seconds)}`);
 }
 function setTime(value) { seconds = wrap(value); base = seconds; origin = performance.now(); render(); }
@@ -53,6 +53,7 @@ function setPlaying(value) {
   base = seconds; origin = performance.now();
   document.body.classList.toggle('paused', !playing);
   $('time').disabled = playing;
+  $('period').disabled = playing;
   $('toggle-label').textContent = playing ? '정지' : '재생';
   $('realtime').textContent = playing ? '실제 시간으로 이동' : '실제 시간으로 재생';
   $('toggle').setAttribute('aria-label', playing ? '정지' : '재생');
@@ -69,15 +70,14 @@ document.addEventListener('keydown', event => {
   if (event.code === 'KeyF') toggleFullscreen();
   else setPlaying(!playing);
 });
-for (const id of ['second-mode', 'hour-cycle']) {
+for (const id of ['second-mode', 'hour-cycle', 'period']) {
   $(id).addEventListener('pointerdown', event => event.currentTarget.classList.add('pointer-focus'));
   $(id).addEventListener('keydown', event => event.currentTarget.classList.remove('pointer-focus'));
   $(id).addEventListener('blur', event => event.currentTarget.classList.remove('pointer-focus'));
 }
 $('hour-cycle').addEventListener('change', event => {
-  const hours = Number(event.target.value);
-  hands.hour = hours * 3600;
-  renderNumbers(hours);
+  hourCycle = Number(event.target.value);
+  $('period-label').hidden = hourCycle === 24;
   render();
 });
 $('second-mode').addEventListener('change', event => {
@@ -89,17 +89,20 @@ $('realtime').addEventListener('click', () => {
   setPlaying(true);
 });
 $('time').disabled = true;
-$('time').addEventListener('change', event => {
+$('period').disabled = true;
+function updateTime() {
   if (playing) return;
-  const parsed = parseTime(event.target.value);
+  const parsed = parseTime($('time').value, hourCycle, $('period').value);
   if (parsed !== null) setTime(parsed);
-  else { event.target.value = formatTime(seconds); $('message').textContent = '올바른 시간을 입력해 주세요.'; }
-});
+  else { $('time').value = formatTime(seconds, hourCycle); $('period').value = seconds < 43200 ? 'am' : 'pm'; $('message').textContent = '올바른 시간을 입력해 주세요.'; }
+}
+$('time').addEventListener('change', updateTime);
+$('period').addEventListener('change', updateTime);
 function pointerAngle(event) {
   const rect = $('clock').getBoundingClientRect();
   return (Math.atan2(event.clientX-rect.left-rect.width/2, -(event.clientY-rect.top-rect.height/2))*180/Math.PI + 360)%360;
 }
-for (const name of Object.keys(hands)) {
+for (const [name, period] of Object.entries(hands)) {
   const hand = $(name);
   hand.addEventListener('pointerdown', event => {
     if (playing || drag || (event.pointerType==='mouse' && event.button!==0)) return;
@@ -111,7 +114,7 @@ for (const name of Object.keys(hands)) {
   hand.addEventListener('pointermove', event => {
     if (!drag || drag.id!==event.pointerId) return;
     const angle = pointerAngle(event);
-    drag.value += angleDelta(drag.angle, angle) / 360 * hands[name];
+    drag.value += angleDelta(drag.angle, angle) / 360 * period;
     drag.angle = angle;
     setTime(Math.round(drag.value));
   });
