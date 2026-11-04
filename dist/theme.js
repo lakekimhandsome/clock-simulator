@@ -4,7 +4,7 @@ try { savedTheme = localStorage.getItem('theme'); } catch {}
 if (!['light', 'dark'].includes(savedTheme)) savedTheme = null;
 function applyTheme(theme) {
   document.documentElement.dataset.theme = theme;
-  document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#181b17' : '#f5f4f0';
+  document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#000000' : '#f5f4f0';
   const button = document.getElementById('theme');
   if (button) {
     button.setAttribute('aria-pressed', String(theme === 'dark'));

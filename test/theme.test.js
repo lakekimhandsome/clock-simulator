@@ -29,7 +29,7 @@ test('theme follows system changes until a manual choice, then persists the choi
   ui.preference.matches = true;
   ui.preference.change();
   assert.equal(theme(), 'dark');
-  assert.equal(ui.meta.content, '#181b17');
+  assert.equal(ui.meta.content, '#000000');
   assert.equal(ui.attributes['aria-pressed'], 'true');
   assert.equal(ui.attributes['aria-label'], '라이트 모드');
   ui.button.click();
