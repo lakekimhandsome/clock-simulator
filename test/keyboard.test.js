@@ -10,7 +10,9 @@ test('Space toggles playback and F toggles fullscreen without repeats or interfe
   let fullscreenRequests = 0;
   let fullscreenExits = 0;
   const element = () => ({
-    attributes: {}, setAttribute(name, value) { this.attributes[name] = value; }, append() {}, addEventListener() {},
+    attributes: {}, setAttribute(name, value) { this.attributes[name] = value; }, append() {},
+    listeners: {}, addEventListener(type, handler) { this.listeners[type] = handler; },
+    classList: { values: new Set(), add(value) { this.values.add(value); }, remove(value) { this.values.delete(value); } },
     closest() { return false; },
   });
   const document = {
@@ -35,6 +37,14 @@ test('Space toggles playback and F toggles fullscreen without repeats or interfe
     listeners.keydown(event);
     return event;
   };
+  const mode = elements.get('second-mode');
+  mode.listeners.pointerdown({ currentTarget: mode });
+  assert.equal(mode.classList.values.has('pointer-focus'), true);
+  mode.listeners.keydown({ currentTarget: mode });
+  assert.equal(mode.classList.values.has('pointer-focus'), false);
+  mode.listeners.pointerdown({ currentTarget: mode });
+  mode.listeners.blur({ currentTarget: mode });
+  assert.equal(mode.classList.values.has('pointer-focus'), false);
   const input = elements.get('time');
   assert.equal(input.disabled, true);
   assert.equal(press().prevented, true);

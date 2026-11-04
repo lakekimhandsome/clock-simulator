@@ -65,6 +65,9 @@ document.addEventListener('keydown', event => {
   if (event.code === 'KeyF') toggleFullscreen();
   else setPlaying(!playing);
 });
+$('second-mode').addEventListener('pointerdown', event => event.currentTarget.classList.add('pointer-focus'));
+$('second-mode').addEventListener('keydown', event => event.currentTarget.classList.remove('pointer-focus'));
+$('second-mode').addEventListener('blur', event => event.currentTarget.classList.remove('pointer-focus'));
 $('second-mode').addEventListener('change', event => {
   ticksPerSecond = Number(event.target.value);
   render();
