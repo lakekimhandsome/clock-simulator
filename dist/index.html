@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5f4f0">
-  <script src="theme.js?v=3"></script>
+  <script src="theme.js?v=4"></script>
   <meta name="description" content="시간을 잠시 멈추고, 바늘을 돌려 보세요. 간단한 아날로그 시계 시뮬레이터.">
   <title>Clock Simulator</title>
-  <link rel="stylesheet" href="style.css?v=11">
+  <link rel="stylesheet" href="style.css?v=12">
 </head>
 <body>
-  <header><span class="brand">CLOCK SIMULATOR<span class="brand-dot">.</span></span><div class="header-actions"><button id="theme" class="theme" aria-label="다크 모드" aria-pressed="false" title="다크 모드"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use id="theme-icon" href="icons.svg#moon"/></svg></button><button id="fullscreen" class="fullscreen" aria-keyshortcuts="f" aria-label="전체화면" title="전체화면 (F)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use id="fullscreen-icon" href="icons.svg#maximize"/></svg></button></div></header>
+  <header><span class="brand">CLOCK SIMULATOR<span class="brand-dot">.</span></span><div class="header-actions"><button id="theme" class="theme" role="switch" aria-label="다크 모드" aria-checked="false" title="다크 모드"><span class="theme-thumb"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use id="theme-icon" href="icons.svg#sun"/></svg></span></button><button id="fullscreen" class="fullscreen" aria-keyshortcuts="f" aria-label="전체화면" title="전체화면 (F)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use id="fullscreen-icon" href="icons.svg#maximize"/></svg></button></div></header>
   <main>
     <div class="clock-wrap">
       <svg id="clock" viewBox="0 0 600 600" role="group" aria-label="아날로그 시계">
@@ -48,6 +48,6 @@
   </main>
   <footer><span>시간을, 내 마음대로.</span><a href="https://github.com/lakekimhandsome/clock-simulator" target="_blank" rel="noopener noreferrer">GitHub <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="icons.svg#external-link"/></svg></a></footer>
   <p id="message" class="sr-only" role="status"></p>
-  <script type="module" src="app.js?v=11"></script>
+  <script type="module" src="app.js?v=12"></script>
 </body>
 </html>

@@ -61,6 +61,8 @@ test('Space toggles playback and F toggles fullscreen without repeats or interfe
     assert.equal(press(overrides).prevented, undefined);
     assert.equal(input.disabled, false);
   }
+  assert.equal(press({ target: { closest: selector => selector === '[role="switch"]' } }).prevented, undefined);
+  assert.equal(input.disabled, false);
   press({ code: 'KeyF' });
   assert.equal(fullscreenRequests, 1);
   assert.equal(document.fullscreenElement, document.body);

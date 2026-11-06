@@ -65,6 +65,7 @@ $('toggle').addEventListener('click', () => setPlaying(!playing));
 document.addEventListener('keydown', event => {
   if (!['Space', 'KeyF'].includes(event.code) || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || event.isComposing || event.defaultPrevented) return;
   if (event.target.isContentEditable || event.target.closest('input, textarea, select')) return;
+  if (event.code === 'Space' && event.target.closest('[role="switch"]')) return;
   event.preventDefault();
   if (event.repeat || drag) return;
   if (event.code === 'KeyF') toggleFullscreen();

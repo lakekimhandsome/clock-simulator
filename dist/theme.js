@@ -7,9 +7,8 @@ function applyTheme(theme) {
   document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#000000' : '#f5f4f0';
   const button = document.getElementById('theme');
   if (button) {
-    button.setAttribute('aria-pressed', String(theme === 'dark'));
-    button.setAttribute('aria-label', theme === 'dark' ? '라이트 모드' : '다크 모드');
-    document.getElementById('theme-icon').setAttribute('href', `icons.svg#${theme === 'dark' ? 'sun' : 'moon'}`);
+    button.setAttribute('aria-checked', String(theme === 'dark'));
+    document.getElementById('theme-icon').setAttribute('href', `icons.svg#${theme === 'dark' ? 'moon' : 'sun'}`);
     button.title = theme === 'dark' ? '라이트 모드' : '다크 모드';
   }
 }

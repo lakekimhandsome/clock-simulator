@@ -6,7 +6,7 @@ Choose 12-hour or 24-hour digital time. In 12-hour mode, use the AM/PM selector 
 
 Movement modes: deadbeat (1 step/second), 3Hz (6 steps/second), 4Hz (8 steps/second), and continuous (default). The mode selector is hidden with the other controls in fullscreen. The selected beat rate applies to all three hands.
 
-The theme follows your system appearance until you choose light or dark with the header button. Your choice is saved in this browser and also applies in fullscreen.
+The theme follows your system appearance until you choose light or dark with the header switch (sun on the left for light, moon on the right for dark). Your choice is saved in this browser and also applies in fullscreen.
 
 ## Local
 
